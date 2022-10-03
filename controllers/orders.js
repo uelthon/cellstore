@@ -36,7 +36,7 @@ router.get('/bestbrand', async (req, res) =>{
       path:'product',
       select: 'id name brand price'
     }
-  }).limit(50)
+  }).sort({ createdAt: -1 }).limit(50)
   const result = bestBrand(orders)
   res.json(result)
 })

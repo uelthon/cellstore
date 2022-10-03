@@ -23,7 +23,7 @@ export const success = (orders,limit=5) => {
     }
   })
 
-  const result =  Object.keys(listOrden).map(e => listOrden[e]).splice(0,limit).sort((a,b) => b.quantity - a.quantity)
+  const result =  Object.keys(listOrden).map(e => listOrden[e]).sort((a,b) => b.quantity - a.quantity).splice(0,limit)
   return result
 }
 
