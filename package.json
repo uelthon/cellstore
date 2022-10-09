@@ -24,6 +24,11 @@
     "stripe": "^10.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "eslint": "^8.25.0",
+    "nodemon": "^2.0.19",
+    "standard": "^17.0.0"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/standard/eslintrc.json"
   }
 }

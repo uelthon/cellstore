@@ -1,19 +1,19 @@
-import mongoose from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
+import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const orderSchema = new mongoose.Schema({
-  user:{ 
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required:true
+    required: true
   },
-  products:[
+  products: [
     {
-      product:{
+      product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
       },
-      quantity:{
+      quantity: {
         type: Number,
         default: 1
       }
@@ -23,25 +23,25 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  address:{type:String, required:true},
-  status:{type:String, default:'pending'}
-}, {timestamps:true})
+  address: { type: String, required: true },
+  status: { type: String, default: 'pending' }
+}, { timestamps: true })
 
 orderSchema.plugin(uniqueValidator)
 
 orderSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString();
-      returnedObject.products = returnedObject.products.map(e => {
-        return{
-          product: e.product,
-          quantity: e.quantity
-        }
-      })
-      delete returnedObject._id;
-      delete returnedObject.__v;
+    returnedObject.id = returnedObject._id.toString()
+    returnedObject.products = returnedObject.products.map(e => {
+      return {
+        product: e.product,
+        quantity: e.quantity
+      }
+    })
+    delete returnedObject._id
+    delete returnedObject.__v
   }
-});
+})
 
 const Order = mongoose.model('Order', orderSchema)
 

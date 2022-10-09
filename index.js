@@ -1,29 +1,29 @@
 import * as dotenv from 'dotenv'
-dotenv.config()
-import express from "express";
-import cors from "cors"
-import mongoose from "mongoose";
-import 'express-async-errors';
-import usersRouter from "./controllers/users.js"
-import loginRouter from "./controllers/login.js"
-import productsRouter from "./controllers/products.js"
-import cartsRouter from "./controllers/carts.js"
+import express from 'express'
+import cors from 'cors'
+import mongoose from 'mongoose'
+import 'express-async-errors'
+import usersRouter from './controllers/users.js'
+import loginRouter from './controllers/login.js'
+import productsRouter from './controllers/products.js'
+import cartsRouter from './controllers/carts.js'
 import orderService from './controllers/orders.js'
 import paymentService from './controllers/payments.js'
-import { errorHandler, unknownEndpoint, requestLogger,tokenExtractor } from "./utils/middle.js"
-import path from "path"
-const __dirname = path.resolve();
+import { errorHandler, unknownEndpoint, requestLogger, tokenExtractor } from './utils/middle.js'
+import path from 'path'
+dotenv.config()
+const __dirname = path.resolve()
 
-console.log("mongoDB connecting...")
+console.log('mongoDB connecting...')
 mongoose.connect(process.env.MONGODB_URL)
-        .then(() => console.log("mongoDB connected :)"))
-        .catch((err) => console.log(err))
+  .then(() => console.log('mongoDB connected :)'))
+  .catch((err) => console.log(err))
 
 const app = express()
 
 app.use(express.json())
 app.use(cors())
-app.use(express.static('dist'));
+app.use(express.static('dist'))
 app.use(tokenExtractor)
 app.use(requestLogger)
 
@@ -39,13 +39,13 @@ app.use('/api/orders', orderService)
 app.use('/api/payments', paymentService)
 
 app.get('*', (req, res) => {
-  res.sendFile(__dirname + '/dist/index.html');
+  res.sendFile(__dirname + '/dist/index.html')
 })
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
   console.log(`sever connect to port ${PORT}`)
