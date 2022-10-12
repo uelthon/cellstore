@@ -88,7 +88,7 @@ router.get('/order/:id', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const auth = req.auth
   if (auth.id !== req.params.id && !auth.isAdmin) return res.status(400).json({ error: 'Not Authorized' })
-  const orders = await Order.find({ user: req.params.id })
+  const orders = await Order.find({ user: req.params.id }).sort({ createdAt: -1 })
   res.json(orders)
 })
 
