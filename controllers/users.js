@@ -100,21 +100,17 @@ router.put('/:id/admin', async (req, res) => {
   res.json(user)
 })
 
-router.put('/:id/update/username', async (req, res) => {
+router.put('/:id/update/user', async (req, res) => {
   const auth = req.auth
   const id = req.params.id
-  const { username } = req.body
+  const { username, address } = req.body
+  if (!username && !address) return res.status(400).json({ error: 'Not allowed username or address' })
+  const body = {
+    ...(username ? { username } : null),
+    ...(address ? { address } : null)
+  }
   if (!auth || auth.isAdmin || auth.id !== id) return res.status(400).json({ error: 'Not Authorized' })
-  const user = await User.findByIdAndUpdate(id, { username }, { new: true })
-  res.json(user)
-})
-
-router.put('/:id/update/address', async (req, res) => {
-  const auth = req.auth
-  const id = req.params.id
-  const { address } = req.body
-  if (!auth || auth.isAdmin || auth.id !== id) return res.status(400).json({ error: 'Not Authorized' })
-  const user = await User.findByIdAndUpdate(id, { address }, { new: true })
+  const user = await User.findByIdAndUpdate(id, body, { new: true })
   res.json(user)
 })
 
@@ -126,7 +122,7 @@ router.put('/:id/update/password', async (req, res) => {
   const user = await User.findById(id)
   const isPasswordValid = await bcrypt.compare(currentpassword, user.passwordHash)
   if (!isPasswordValid) {
-    return res.status(400).json({ error: 'invalid user or password' })
+    return res.status(400).json({ error: 'invalid password' })
   }
   const passwordHash = await bcrypt.hash(newpassword, 10)
   user.passwordHash = passwordHash
