@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+    unique: false,
     required: true
   },
   passwordHash: {
